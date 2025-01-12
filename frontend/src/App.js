@@ -1,3 +1,34 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
+function App() {
+    return (
+        <Router>
+            <nav>
+                <Link to="/">Home</Link>
+                <Link to="/login">Login</Link>
+                <Link to="/items">Items</Link>
+            </nav>
+            <Routes>
+                <Route path="/" element={<h1>Welcome to Palace of Goods</h1>} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/items" element={<ItemsPage />} />
+            </Routes>
+        </Router>
+    );
+}
+
+function LoginPage() {
+    // Login logic here
+    return <h2>Login Page</h2>;
+}
+
+function ItemsPage() {
+    // Items logic here
+    return <h2>Items Page</h2>;
+}
+
+export default App;
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 const updateItem = async (id, updatedItem) => {
