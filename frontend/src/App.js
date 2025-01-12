@@ -1,3 +1,59 @@
+import React, { useState } from "react";
+import axios from "axios";
+
+function App() {
+    const [amount, setAmount] = useState("");
+    const [paymentId, setPaymentId] = useState(null);
+
+    const createPayment = async () => {
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/api/create-payment", {
+                amount: parseFloat(amount),
+                memo: "Payment for goods",
+            }, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            });
+            setPaymentId(response.data.payment_id);
+            alert("Payment created! Please confirm in the Pi app.");
+        } catch (err) {
+            console.error("Failed to create payment:", err.response.data);
+        }
+    };
+
+    const completePayment = async () => {
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/api/complete-payment", {
+                payment_id: paymentId,
+            });
+            alert("Payment completed successfully!");
+            setPaymentId(null); // Reset after completion
+        } catch (err) {
+            console.error("Failed to complete payment:", err.response.data);
+        }
+    };
+
+    return (
+        <div>
+            <h1>Palace of Goods</h1>
+            <h2>Make a Payment</h2>
+            <input
+                type="number"
+                placeholder="Enter amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+            />
+            <button onClick={createPayment}>Create Payment</button>
+            {paymentId && (
+                <div>
+                    <p>Payment ID: {paymentId}</p>
+                    <button onClick={completePayment}>Complete Payment</button>
+                </div>
+            )}
+        </div>
+    );
+}
+
+export default App;
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 <nav className="navbar navbar-expand-lg navbar-light bg-light">
