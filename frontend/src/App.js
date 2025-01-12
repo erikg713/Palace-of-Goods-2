@@ -167,3 +167,14 @@ export default App;
         </li>
     ))}
 </ul>
+const logout = () => {
+    setToken(null);
+    setItems([]);
+};
+
+return (
+    <div>
+        {token ? <button onClick={logout}>Logout</button> : null}
+        {/* Rest of your UI */}
+    </div>
+);
