@@ -53,3 +53,47 @@ function App() {
 }
 
 export default App;
+import React, { useState } from "react";
+import axios from "axios";
+
+function App() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [token, setToken] = useState(null);
+
+    const login = (e) => {
+        e.preventDefault();
+        axios.post("http://127.0.0.1:5000/api/login", { username, password })
+            .then((response) => setToken(response.data.access_token))
+            .catch((error) => console.error("Error logging in:", error));
+    };
+
+    return (
+        <div>
+            <h1>Palace of Goods</h1>
+            {!token ? (
+                <form onSubmit={login}>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button type="submit">Login</button>
+                </form>
+            ) : (
+                <div>
+                    <p>Logged in! Your token: {token}</p>
+                </div>
+            )}
+        </div>
+    );
+}
+
+export default App;
