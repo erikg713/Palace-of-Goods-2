@@ -125,3 +125,14 @@ function App() {
 }
 
 export default App;
+<ul>
+    {items.map((item) => (
+        <li key={item.id}>
+            {item.name} - ${item.price.toFixed(2)}
+            <button onClick={() => updateItem(item.id, { name: "Updated Name", price: item.price })}>
+                Update
+            </button>
+            <button onClick={() => deleteItem(item.id)}>Delete</button>
+        </li>
+    ))}
+</ul>
