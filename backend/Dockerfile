@@ -1,21 +1,17 @@
-# Dockerfile
-# Use Node.js LTS version as base image
-FROM node:16-alpine
+# Use an official Python runtime as a parent image
+FROM python:3.10
 
-# Set working directory
-WORKDIR /usr/src/app
+# Set the working directory in the container
+WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy the current directory contents into the container
+COPY . /app
 
-# Install dependencies
-RUN npm install
+# Install Python dependencies
+RUN pip install -r requirements.txt
 
-# Copy the rest of the application code
-COPY . .
+# Expose the port Flask runs on
+EXPOSE 5000
 
-# Expose the port the app runs on
-EXPOSE 4000
-
-# Command to start the application
-CMD ["npm", "run", "start"]
+# Define the command to run the application
+CMD ["python", "app.py"]
