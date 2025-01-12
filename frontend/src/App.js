@@ -1,6 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
+<nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <div className="container">
+        <a className="navbar-brand" href="/">Palace of Goods</a>
+        <div>
+            <a className="nav-link" href="/login">Login</a>
+            <a className="nav-link" href="/items">Items</a>
+        </div>
+    </div>
+</nav>
 function App() {
     return (
         <Router>
