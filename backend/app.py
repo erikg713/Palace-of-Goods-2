@@ -2,7 +2,53 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask import Flask, jsonify, request
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
+from pi_pysdk import Pi
 
+app = Flask(__name__)
+
+# Configure the Pi SDK
+PI_API_KEY = "your_pi_api_key_here"  # Get this from the Pi Developer Console
+pi = Pi(api_key=PI_API_KEY)
+
+@app.route('/api/create-payment', methods=['POST'])
+@jwt_required()
+def create_payment():
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+    amount = data.get('amount')
+    memo = data.get('memo', 'Payment for goods')
+    metadata = {"user_id": current_user_id}
+
+    if not amount or amount <= 0:
+        return jsonify({"msg": "Invalid payment amount"}), 400
+
+    # Create a payment request
+    try:
+        payment = pi.create_payment(
+            amount=amount,
+            memo=memo,
+            metadata=metadata,
+        )
+        return jsonify({"payment_id": payment['identifier']}), 201
+    except Exception as e:
+        return jsonify({"msg": "Failed to create payment", "error": str(e)}), 500
+
+@app.route('/api/complete-payment', methods=['POST'])
+def complete_payment():
+    data = request.get_json()
+    payment_id = data.get('payment_id')
+
+    if not payment_id:
+        return jsonify({"msg": "Payment ID is required"}), 400
+
+    # Verify and complete the payment
+    try:
+        payment = pi.complete_payment(payment_id)
+        return jsonify({"msg": "Payment completed", "payment": payment}), 200
+    except Exception as e:
+        return jsonify({"msg": "Failed to complete payment", "error": str(e)}), 500
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///palace_of_goods.db'  # SQLite database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
