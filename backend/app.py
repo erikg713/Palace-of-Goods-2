@@ -153,3 +153,48 @@ def add_item():
 if __name__ == "__main__":
     db.create_all()  # Creates database tables
     app.run(debug=True)
+class Payment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    identifier = db.Column(db.String(100), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(50), default='pending')  # pending, completed, failed
+    amount = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.now())
+
+# Store payment details in create-payment route
+@app.route('/api/create-payment', methods=['POST'])
+@jwt_required()
+def create_payment():
+    # Existing code...
+    try:
+        payment = pi.create_payment(
+            amount=total_amount,
+            memo=memo,
+            metadata={"user_id": current_user_id, "item_ids": item_ids},
+        )
+        # Save payment details to the database
+        new_payment = Payment(
+            identifier=payment['identifier'],
+            user_id=current_user_id,
+            amount=total_amount,
+        )
+        db.session.add(new_payment)
+        db.session.commit()
+        return jsonify({"payment_id": payment['identifier']}), 201
+    except Exception as e:
+        return jsonify({"msg": "Failed to create payment", "error": str(e)}), 500
+
+# Update payment status in the complete-payment route
+@app.route('/api/complete-payment', methods=['POST'])
+def complete_payment():
+    # Existing code...
+    try:
+        payment = pi.complete_payment(payment_id)
+        # Update payment status in the database
+        db_payment = Payment.query.filter_by(identifier=payment_id).first()
+        if db_payment:
+            db_payment.status = "completed"
+            db.session.commit()
+        return jsonify({"msg": "Payment completed successfully"}), 200
+    except Exception as e:
+        return jsonify({"msg": "Failed to complete payment", "error": str(e)}), 500
