@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+const updateItem = async (id, updatedItem) => {
+    try {
+        await axios.put(`http://127.0.0.1:5000/api/update-item/${id}`, updatedItem, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        fetchItems();
+    } catch (err) {
+        console.error("Failed to update item:", err.response.data);
+    }
+};
 
+const deleteItem = async (id) => {
+    try {
+        await axios.delete(`http://127.0.0.1:5000/api/delete-item/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        fetchItems();
+    } catch (err) {
+        console.error("Failed to delete item:", err.response.data);
+    }
+};
 function App() {
     const [token, setToken] = useState(null);
     const [username, setUsername] = useState("");
