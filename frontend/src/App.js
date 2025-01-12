@@ -178,3 +178,26 @@ return (
         {/* Rest of your UI */}
     </div>
 );
+const [search, setSearch] = useState("");
+
+const filteredItems = items.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+);
+
+return (
+    <div>
+        <input
+            type="text"
+            placeholder="Search items"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+        />
+        <ul>
+            {filteredItems.map((item) => (
+                <li key={item.id}>
+                    {item.name} - ${item.price.toFixed(2)}
+                </li>
+            ))}
+        </ul>
+    </div>
+);
