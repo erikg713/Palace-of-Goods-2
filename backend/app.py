@@ -24,6 +24,35 @@ class Item(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 # Routes
+@app.route('/api/update-item/<int:item_id>', methods=['PUT'])
+@jwt_required()
+def update_item(item_id):
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+    item = Item.query.filter_by(id=item_id, user_id=current_user_id).first()
+
+    if not item:
+        return jsonify({"msg": "Item not found"}), 404
+
+    item.name = data.get('name', item.name)
+    item.price = data.get('price', item.price)
+    db.session.commit()
+
+    return jsonify({"msg": "Item updated successfully"}), 200
+
+@app.route('/api/delete-item/<int:item_id>', methods=['DELETE'])
+@jwt_required()
+def delete_item(item_id):
+    current_user_id = get_jwt_identity()
+    item = Item.query.filter_by(id=item_id, user_id=current_user_id).first()
+
+    if not item:
+        return jsonify({"msg": "Item not found"}), 404
+
+    db.session.delete(item)
+    db.session.commit()
+
+    return jsonify({"msg": "Item deleted successfully"}), 200
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
