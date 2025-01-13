@@ -1,7 +1,19 @@
 // src/pages/Items.js
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthContext";
+import debounce from "lodash.debounce"; // Install with `npm install lodash.debounce`
 
+const handleSearch = debounce(async (query) => {
+  try {
+    const response = await fetch(`/api/items/search?q=${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    setItems(data);
+  } catch (error) {
+    console.error("Failed to search items:", error);
+  }
+}, 500);
 const Items = () => {
   const { token } = useContext(AuthContext);
   const [items, setItems] = useState([]);
