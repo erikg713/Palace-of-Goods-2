@@ -1,9 +1,8 @@
-flask-bcrypt
-flask-sqlalchemy
-flask-cors
-Flask-JWT-Extended 
-flask-Migrate
-flask-talisman
-flask-login
-Flask-MongoEngine 
-flask
+Flask==2.2.5
+Flask-SQLAlchemy==3.0.0
+Flask-Bcrypt==1.0.1
+Flask-JWT-Extended==4.4.4
+Flask-Migrate==4.0.3
+Flask-Talisman==0.8.1
+pi-pysdk==1.0.0  # Replace with the real Pi SDK version
+pytest==7.4.0
