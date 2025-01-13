@@ -37,39 +37,3 @@ def create_payment():
         return jsonify({"payment_id": payment['identifier']}), 201
     except Exception as e:
         return jsonify({"msg": "Failed to create payment", "error": str(e)}), 500
-
-@payment_bp.route('/complete', methods=['POST'])
-def complete_payment():
-    data = request.get_json()
-    payment_id = data.get('payment_id')
-
-    if not payment_id:
-        return jsonify({"msg": "Payment ID is required"}), 400
-
-    try:
-        payment = pi.complete_payment(payment_id)
-        db_payment = Payment.query.filter_by(identifier=payment_id).first()
-
-        if not db_payment:
-            return jsonify({"msg": "Payment not found"}), 404
-
-        db_payment.status = "completed"
-        db.session.commit()
-        return jsonify({"msg": "Payment completed successfully", "payment": payment}), 200
-    except Exception as e:
-        return jsonify({"msg": "Failed to complete payment", "error": str(e)}), 500
-
-@payment_bp.route('/status/<payment_id>', methods=['GET'])
-@jwt_required()
-def check_payment_status(payment_id):
-    db_payment = Payment.query.filter_by(identifier=payment_id).first()
-
-    if not db_payment:
-        return jsonify({"msg": "Payment not found"}), 404
-
-    return jsonify({
-        "payment_id": db_payment.identifier,
-        "status": db_payment.status,
-        "amount": db_payment.amount,
-        "created_at": db_payment.created_at
-    })
