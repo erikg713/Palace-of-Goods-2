@@ -232,3 +232,6 @@ def complete_payment():
         return jsonify({"msg": "Payment completed successfully"}), 200
     except Exception as e:
         return jsonify({"msg": "Failed to complete payment", "error": str(e)}), 500
+from flask_migrate import Migrate
+
+migrate = Migrate(app, db)
