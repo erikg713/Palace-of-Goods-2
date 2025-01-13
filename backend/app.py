@@ -16,7 +16,13 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from config import config
+from flask_talisman import Talisman
 
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(config)
+    Talisman(app, content_security_policy=None)  # Customize as needed
+    # Other initializations...
 # Extensions
 db = SQLAlchemy()
 bcrypt = Bcrypt()
