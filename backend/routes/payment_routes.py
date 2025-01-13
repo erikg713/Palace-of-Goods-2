@@ -101,3 +101,6 @@ def validate_payment_data(data):
     if 'memo' not in data or not data['memo']:
         errors['memo'] = "Memo is required."
     return errors
+errors = validate_payment_data(data)
+if errors:
+    return jsonify(errors), 400
