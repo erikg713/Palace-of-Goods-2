@@ -7,7 +7,16 @@ from flask_talisman import Talisman
 from config import config
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_socketio import SocketIO
 
+socketio = SocketIO()
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(config)
+    socketio.init_app(app)
+    # Other initializations...
+    return app
 limiter = Limiter(get_remote_address, app=None)
 
 def create_app():
