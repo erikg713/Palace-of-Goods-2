@@ -2,4 +2,4 @@ flask-bcrypt
 flask-sqlalchemy
 flask-cors
 Flask-JWT-Extended 
-flask 
+flask-Migrate
