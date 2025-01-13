@@ -17,3 +17,9 @@ class Payment(db.Model):
     amount = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(50), default='pending')  # pending, completed
     created_at = db.Column(db.DateTime, default=db.func.now())
+
+class Payment(db.Model):
+    milestones = db.Column(db.JSON, nullable=True)  # e.g., [{"amount": 10, "status": "paid"}]
+
+milestones = [{"amount": 10, "status": "pending"}, {"amount": 15, "status": "pending"}]
+payment = Payment(amount=total_amount, milestones=milestones)
