@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "5000:5000"
     environment:
@@ -19,7 +17,6 @@ services:
 
   postgres:
     image: postgres:13
-    restart: always
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -28,61 +25,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-
-volumes:
-  postgres-data:
-
-
-version: '3.8'
-
-services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "4000:4000" # Adjust this port if necessary
-    volumes:
-      - ./backend:/app
-    environment:
-      - FLASK_ENV=development
-      - PORT=4000
-      - NODE_ENV=development
-      - DB_HOST=postgres
-      - DB_USER=your_db_user
-      - DB_PASSWORD=your_db_password
-      - DB_NAME=palace_of_goods
-      - DB_PORT=5432
-      - JWT_SECRET=your_jwt_secret
-      - JWT_EXPIRATION=7d
-      - PI_API_KEY=your_pi_api_key # Pi API Key for authentication
-      - PI_APP_PRIVATE_KEY=your_pi_app_private_key # Private Key for Pi Wallet
-      - PI_APP_ID=your_pi_app_id # Your App's ID registered with Pi Network
-    depends_on:
-      - postgres
-
-  postgres:
-    image: postgres:13
-    restart: always
-    environment:
-      POSTGRES_USER: your_db_user
-      POSTGRES_PASSWORD: your_db_password
-      POSTGRES_DB: palace_of_goods
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - CHOKIDAR_USEPOLLING=true
 
 volumes:
   postgres-data:
