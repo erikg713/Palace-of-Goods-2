@@ -1,17 +1,19 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10
+# Backend Dockerfile
+FROM python:3.9-slim
 
-# Set the working directory in the container
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Create working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container
-COPY . /app
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Python dependencies
-RUN pip install -r requirements.txt
+# Copy project files
+COPY . .
 
-# Expose the port Flask runs on
-EXPOSE 5000
-
-# Define the command to run the application
-CMD ["python", "app.py"]
+# Run the application
+CMD ["flask", "run", "--host=0.0.0.0"]
