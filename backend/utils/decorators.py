@@ -17,3 +17,18 @@ def role_required(role):
             return fn(*args, **kwargs)
         return decorator
     return wrapper
+
+from functools import wraps
+from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+
+def role_required(role):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorator(*args, **kwargs):
+            verify_jwt_in_request()
+            current_user = get_jwt_identity()
+            if current_user.get('role') != role:
+                return jsonify({"msg": "Access denied"}), 403
+            return fn(*args, **kwargs)
+        return decorator
+    return wrapper
