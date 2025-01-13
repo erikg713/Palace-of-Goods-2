@@ -94,3 +94,10 @@ def check_payment_status(payment_id):
         }), 200
     except Exception as e:
         return jsonify({"msg": "Failed to retrieve payment status", "error": str(e)}), 500
+def validate_payment_data(data):
+    errors = {}
+    if 'amount' not in data or data['amount'] <= 0:
+        errors['amount'] = "Invalid or missing payment amount."
+    if 'memo' not in data or not data['memo']:
+        errors['memo'] = "Memo is required."
+    return errors
