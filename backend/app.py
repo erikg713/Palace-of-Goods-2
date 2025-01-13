@@ -5,7 +5,41 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from pi_pysdk import Pi
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
+from config import config
 
+# Initialize extensions
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+jwt = JWTManager()
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(config)
+
+    # Initialize extensions
+    db.init_app(app)
+    bcrypt.init_app(app)
+    jwt.init_app(app)
+
+    # Register Blueprints
+    from routes.auth_routes import auth_bp
+    from routes.item_routes import item_bp
+    from routes.payment_routes import payment_bp
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(item_bp, url_prefix='/api/items')
+    app.register_blueprint(payment_bp, url_prefix='/api/payments')
+
+    return app
+
+if __name__ == "__main__":
+    app = create_app()
+    with app.app_context():
+        db.create_all()  # Ensure tables are created
+    app.run(debug=True)
 app = Flask(__name__)
 
 # Configure the Pi SDK
