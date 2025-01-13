@@ -5,6 +5,17 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_talisman import Talisman
 from config import config
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+limiter = Limiter(get_remote_address, app=None)
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(config)
+    limiter.init_app(app)
+    # Other initializations...
+    return app
 
 # Initialize extensions
 db = SQLAlchemy()
