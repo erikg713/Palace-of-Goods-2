@@ -1,1 +1,13 @@
-a
+@payment_bp.route('/status/<payment_id>', methods=['GET'])
+@jwt_required()
+def check_payment_status(payment_id):
+    try:
+        # Fetch payment details directly from Pi Network API
+        payment = pi.get_payment(payment_id)
+        return jsonify({
+            "payment_id": payment['identifier'],
+            "status": payment['status'],
+            "amount": payment['amount']
+        }), 200
+    except Exception as e:
+        return jsonify({"msg": "Failed to retrieve payment status", "error": str(e)}), 500
