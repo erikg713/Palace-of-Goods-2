@@ -6,3 +6,4 @@ Flask-Migrate==4.0.3
 Flask-Talisman==0.8.1
 pi-pysdk==1.0.0  # Replace with the real Pi SDK version
 pytest==7.4.0
+flask-limiter
