@@ -8,7 +8,8 @@ from config import config
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_socketio import SocketIO
-
+from backend.routes import routes_bp
+app.register_blueprint(routes_bp, url_prefix='/api')
 socketio = SocketIO()
 
 def create_app():
