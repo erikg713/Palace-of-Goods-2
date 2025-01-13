@@ -1,0 +1,7 @@
+@payment_bp.route('/poll-status/<payment_id>', methods=['GET'])
+def poll_payment_status(payment_id):
+    try:
+        payment = pi.get_payment(payment_id)
+        return jsonify({"status": payment['status']}), 200
+    except Exception as e:
+        return jsonify({"msg": "Failed to poll status", "error": str(e)}), 500
