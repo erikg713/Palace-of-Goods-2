@@ -1,0 +1,11 @@
+@payment_bp.route('/history', methods=['GET'])
+@jwt_required()
+def payment_history():
+    current_user_id = get_jwt_identity()
+    payments = Payment.query.filter_by(user_id=current_user_id).all()
+    return jsonify([{
+        "payment_id": payment.identifier,
+        "amount": payment.amount,
+        "status": payment.status,
+        "created_at": payment.created_at
+    } for payment in payments])
