@@ -11,7 +11,34 @@ from flask_socketio import SocketIO
 from backend.routes import routes_bp
 app.register_blueprint(routes_bp, url_prefix='/api')
 socketio = SocketIO()
+from flask import Flask, request, jsonify
+import operator
 
+app = Flask(__name__)
+
+def accumulate(iterable, func=operator.add):
+    it = iter(iterable)
+    try:
+        total = next(it)
+    except StopIteration:
+        return
+    yield total
+    for element in it:
+        total = func(total, element)
+        yield total
+
+@app.route('/calculate_totals', methods=['POST'])
+def calculate_totals():
+    data = request.json
+    transactions = data.get("transactions", [])
+    if not transactions:
+        return jsonify({"error": "No transactions provided"}), 400
+    
+    running_totals = list(accumulate(transactions))
+    return jsonify({"running_totals": running_totals}), 200
+
+if __name__ == "__main__":
+    app.run(debug=True)
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
