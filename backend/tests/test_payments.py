@@ -26,3 +26,13 @@ def test_complete_payment(client):
     payment_id = "test-payment-id"
     response = client.post('/api/payments/complete', json={"payment_id": payment_id})
     assert response.status_code == 200
+
+def test_create_payment(client):
+    # Simulate authenticated user
+    user_id = 1  # Assume a user ID is available
+    response = client.post('/api/payments/create', json={
+        "amount": 10.0,
+        "memo": "Test Payment"
+    }, headers={"Authorization": f"Bearer {generate_token(user_id)}"})
+    assert response.status_code == 201
+    assert "payment_id" in response.json
