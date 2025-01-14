@@ -8,6 +8,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_socketio import SocketIO
 import operator
+import config
 
 # Initialize Flask extensions
 db = SQLAlchemy()
