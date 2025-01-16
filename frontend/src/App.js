@@ -77,6 +77,3 @@ const App = () => {
 };
 
 export default App;
-```
-
-You can update your `frontend/src/App.js` file with this merged definition.
