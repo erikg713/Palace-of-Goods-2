@@ -1,0 +1,18 @@
+def handle_payment_webhook():
+    data = request.get_json()
+    identifier = data.get('identifier')
+    status = data.get('status')
+
+    # Find the payment in the database
+    payment = Payment.query.filter_by(pi_payment_id=identifier).first()
+    if not payment:
+        return jsonify({'message': 'Payment not found'}), 404
+
+    # Update the payment status
+    payment.status = status
+    if status == 'COMPLETED':
+        payment.completed_at = db.func.current_timestamp()
+
+    db.session.commit()
+
+    return jsonify({'message': 'Payment status updated successfully'}), 200
