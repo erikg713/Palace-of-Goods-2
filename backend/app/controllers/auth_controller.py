@@ -49,4 +49,19 @@ def login():
 
     return jsonify({'message': 'Invalid credentials'}), 401
 
+def update_product(product_id):
+    data = request.get_json()
+    product = Product.query.get(product_id)
+
+    if not product:
+        return jsonify({'message': 'Product not found'}), 404
+
+    product.name = data.get('name', product.name)
+    product.description = data.get('description', product.description)
+    product.price = data.get('price', product.price)
+    product.stock = data.get('stock', product.stock)
+
+    db.session.commit()
+    return jsonify({'message': 'Product updated successfully'}), 200
+
 
