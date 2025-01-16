@@ -16,3 +16,11 @@ def handle_payment_webhook():
     db.session.commit()
 
     return jsonify({'message': 'Payment status updated successfully'}), 200
+payment_data = verify_payment('unique_payment_id')
+if payment_data:
+    if payment_data['status'] == 'COMPLETED':
+        print('Payment is completed!')
+    else:
+        print('Payment is not completed:', payment_data['status'])
+else:
+    print('Failed to verify payment.')
