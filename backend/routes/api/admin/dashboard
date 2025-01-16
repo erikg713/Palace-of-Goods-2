@@ -1,4 +1,0 @@
-@admin_bp.route('/admin/dashboard', methods=['GET'])
-@role_required('admin')
-def admin_dashboard():
-    return jsonify({"msg": "Welcome to the admin dashboard!"})
