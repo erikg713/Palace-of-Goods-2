@@ -26,6 +26,13 @@ def create_app():
     app.register_blueprint(product_bp, url_prefix='/api/products')
     app.register_blueprint(order_bp, url_prefix='/api/orders')
 
+@app.errorhandler(404)
+def resource_not_found(e):
+    return jsonify({'message': 'Resource not found'}), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return jsonify({'message': 'An internal server error occurred'}), 500
     return app
 
 app = create_app()
