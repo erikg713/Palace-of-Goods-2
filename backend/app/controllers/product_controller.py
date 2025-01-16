@@ -10,11 +10,20 @@ def add_product():
     return jsonify({'message': 'Product added successfully'}), 201
 
 def get_products():
-    products = Product.query.all()
-    return jsonify([{
-        'id': product.id,
-        'name': product.name,
-        'description': product.description,
-        'price': product.price,
-        'stock': product.stock
-    } for product in products]), 200
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+
+    products = Product.query.paginate(page=page, per_page=per_page)
+
+    return jsonify({
+        'products': [{
+            'id': product.id,
+            'name': product.name,
+            'description': product.description,
+            'price': product.price,
+            'stock': product.stock
+        } for product in products.items],
+        'total': products.total,
+        'pages': products.pages,
+        'current_page': products.page
+    }), 200
