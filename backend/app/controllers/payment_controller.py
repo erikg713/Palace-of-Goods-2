@@ -59,3 +59,16 @@ def initiate_payment():
 
     db.session.commit()
     return jsonify({'message': 'Payment status updated successfully'}), 200
+
+def verify_payment(payment_id):
+    headers = {'Authorization': f'Bearer {PI_API_KEY}'}
+    try:
+        response = requests.get(f'{PI_BASE_URL}/payments/{payment_id}', headers=headers)
+        response_data = response.json()
+
+        if response.status_code == 200:
+            return response_data  # Verified payment details
+        else:
+            return None
+    except Exception as e:
+        return None
