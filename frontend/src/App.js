@@ -1,3 +1,46 @@
+// src/App.js
+import React, { useState } from "react";
+import { Pi } from "pi-sdk";
+
+const App = () => {
+  const [user, setUser] = useState(null); // State to store user information
+
+  // Function to authenticate the user
+  const authenticate = async () => {
+    try {
+      const pi = new Pi();
+      const user = await pi.authenticate(); // Authenticate the user via Pi Network
+      setUser(user); // Save user details in state
+    } catch (error) {
+      console.error("Authentication failed:", error); // Handle errors
+    }
+  };
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      {!user ? (
+        <button
+          onClick={authenticate}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#6200EA",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          Sign in with Pi
+        </button>
+      ) : (
+        <h2>Welcome, {user.username}</h2>
+      )}
+    </div>
+  );
+};
+
+export default App;
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Web3 from 'web3';
