@@ -23,11 +23,12 @@ def initiate_payment():
     }
 
     try:
+        # Send request to Pi Network
         response = requests.post(f'{PI_BASE_URL}/payments', json=payload, headers=headers)
         response_data = response.json()
 
         if response.status_code == 201:
-            # Save the payment details in the database
+            # Save the payment in the database
             payment = Payment(
                 user_id=user_id,
                 pi_payment_id=response_data['identifier'],
@@ -38,42 +39,9 @@ def initiate_payment():
             db.session.add(payment)
             db.session.commit()
 
+            # Return response to the frontend
             return jsonify({'message': 'Payment initiated successfully', 'payment': response_data}), 201
         else:
             return jsonify({'message': 'Failed to initiate payment', 'error': response_data}), response.status_code
     except Exception as e:
         return jsonify({'message': 'An error occurred while initiating payment', 'error': str(e)}), 500
-        def handle_payment_webhook():
-    data = request.get_json()
-    pi_payment_id = data.get('identifier')
-    status = data.get('status')
-
-    # Update payment status in the database
-    payment = Payment.query.filter_by(pi_payment_id=pi_payment_id).first()
-    if not payment:
-        return jsonify({'message': 'Payment not found'}), 404
-
-    payment.status = status
-    if status == 'COMPLETED':
-        payment.completed_at = db.func.current_timestamp()
-
-    db.session.commit()
-    return jsonify({'message': 'Payment status updated successfully'}), 200
-
-def verify_payment(payment_id):
-    headers = {'Authorization': f'Bearer {PI_API_KEY}'}
-    try:
-        response = requests.get(f'{PI_BASE_URL}/payments/{payment_id}', headers=headers)
-        response_data = response.json()
-
-        if response.status_code == 200:
-            return response_data  # Verified payment details
-        else:
-            return None
-    except Exception as e:
-        return None
-data = request.get_json()  # Capture incoming request data
-user_id = data.get('user_id')
-amount = data.get('amount')
-memo = data.get('memo', 'Payment for goods')
-metadata = data.get('metadata', {})
