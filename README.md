@@ -65,6 +65,7 @@
       ```bash
       pip install flask flask-cors
      npx create-react-app frontend
+   pip install pytest flask-testing
 cd frontend
 npm install axios web3 ```
    4. Create the required files:
