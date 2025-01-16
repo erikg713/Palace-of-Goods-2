@@ -2,7 +2,34 @@ import React, { useState, useEffect } from "react";
 import { Pi } from "pi-sdk";
 import axios from "axios";
 import Web3 from "web3";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
+const App = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:5000/api/products")
+      .then((response) => setProducts(response.data))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
+
+  return (
+    <div>
+      <h1>Product Catalog</h1>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>
+            {product.name} - ${product.price}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default App;
 const App = () => {
   const [user, setUser] = useState(null);
   const [items, setItems] = useState([]);
