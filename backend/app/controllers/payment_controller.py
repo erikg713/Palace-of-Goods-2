@@ -43,3 +43,19 @@ def initiate_payment():
             return jsonify({'message': 'Failed to initiate payment', 'error': response_data}), response.status_code
     except Exception as e:
         return jsonify({'message': 'An error occurred while initiating payment', 'error': str(e)}), 500
+        def handle_payment_webhook():
+    data = request.get_json()
+    pi_payment_id = data.get('identifier')
+    status = data.get('status')
+
+    # Update payment status in the database
+    payment = Payment.query.filter_by(pi_payment_id=pi_payment_id).first()
+    if not payment:
+        return jsonify({'message': 'Payment not found'}), 404
+
+    payment.status = status
+    if status == 'COMPLETED':
+        payment.completed_at = db.func.current_timestamp()
+
+    db.session.commit()
+    return jsonify({'message': 'Payment status updated successfully'}), 200
