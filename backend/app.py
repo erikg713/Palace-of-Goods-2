@@ -1,48 +1,50 @@
-# File: backend/app.py
+from flask import Flask
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Api
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
-from pi_network_sdk import PiNetwork
 
+# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
-# MongoDB Configuration
-client = MongoClient("mongodb+srv://username:password@cluster.mongodb.net/dbname")
-db = client['web3_marketplace']
+# Connect to MongoDB
+client = MongoClient("mongodb://localhost:27017/")
+db = client['palaceofgoods']
 
-# Pi Network Configuration
-pi = PiNetwork(app_id="YOUR_PI_APP_ID", secret_key="YOUR_PI_SECRET_KEY")
+# Sample route: Fetch products
+@app.route('/api/products', methods=['GET'])
+def get_products():
+    products = list(db.products.find({}, {"_id": 0}))  # Exclude MongoDB `_id` field
+    return jsonify(products)
 
-@app.route('/api/items', methods=['GET'])
-def get_items():
-    items = list(db.items.find({}, {'_id': 0}))  # Exclude MongoDB ID
-    return jsonify(items)
-
-@app.route('/api/items', methods=['POST'])
-def add_item():
+# Add a product (admin functionality)
+@app.route('/api/products', methods=['POST'])
+def add_product():
     data = request.json
-    db.items.insert_one(data)
-    return jsonify({"message": "Item added successfully"}), 201
-
-@app.route('/api/transaction', methods=['POST'])
-def process_transaction():
-    payload = request.json
-    pi_authorization = payload.get('pi_authorization')
-    
-    # Verify Pi authorization
-    user = pi.verify_user(pi_authorization)
-    if user:
-        # Transaction Logic
-        transaction_data = {
-            "user_id": user['uid'],
-            "amount": payload['amount'],
-            "item_id": payload['item_id']
-        }
-        # Store transaction data in MongoDB
-        db.transactions.insert_one(transaction_data)
-        return jsonify({"message": "Transaction successful"}), 200
-    return jsonify({"error": "Unauthorized"}), 401
+    db.products.insert_one(data)
+    return jsonify({"message": "Product added successfully"}), 201
 
 if __name__ == "__main__":
+    app.run(debug=True)
+
+app = Flask(__name__)
+CORS(app)  # Enable CORS for frontend
+api = Api(app)
+
+# Configure SQLite Database
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///palaceofgoods.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
+# Import and register resources
+from resources.product import ProductResource, ProductListResource
+api.add_resource(ProductListResource, "/api/products")
+api.add_resource(ProductResource, "/api/products/<int:product_id>")
+
+if __name__ == "__main__":
+    db.create_all()  # Create tables
     app.run(debug=True)
