@@ -64,7 +64,9 @@
    3. Install Flask and dependencies:
       ```bash
       pip install flask flask-cors
-      ```
+     npx create-react-app frontend
+cd frontend
+npm install axios web3 ```
    4. Create the required files:
       - Create `app.py`:
         ```bash
