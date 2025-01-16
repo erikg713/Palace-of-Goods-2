@@ -4,7 +4,10 @@ axios.post('/api/payments', {
   memo: "Payment for Order #123",
   metadata: { order_id: 123 }
 }).then(response => {
-  console.log(response.data);
+  console.log('Payment initiated:', response.data);
+  alert(response.data.message);
+  // Save identifier for further tracking
+  const paymentId = response.data.payment.identifier;
 }).catch(error => {
-  console.error(error);
+  console.error('Payment initiation failed:', error.response.data);
 });
