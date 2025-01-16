@@ -1,0 +1,20 @@
+import requests
+import os
+
+PI_BASE_URL = os.getenv('PI_BASE_URL')
+PI_API_KEY = os.getenv('PI_API_KEY')
+
+def verify_payment(payment_id):
+    headers = {'Authorization': f'Bearer {PI_API_KEY}'}
+    try:
+        # Call Pi Network's API to get payment details
+        response = requests.get(f'{PI_BASE_URL}/payments/{payment_id}', headers=headers)
+        response_data = response.json()
+
+        if response.status_code == 200:
+            return response_data  # Return payment details if verification is successful
+        else:
+            return None  # Return None if verification fails
+    except Exception as e:
+        print(f'Error verifying payment: {str(e)}')
+        return None
