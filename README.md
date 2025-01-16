@@ -78,7 +78,7 @@
       ```python
       from flask import Flask, jsonify
       from flask_cors import CORS
-
+pip install flask flask-cors pymongo pi-network-sdk
       app = Flask(__name__)
       CORS(app)  # Allow React frontend to make API requests during development
 
