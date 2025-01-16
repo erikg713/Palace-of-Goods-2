@@ -72,3 +72,8 @@ def verify_payment(payment_id):
             return None
     except Exception as e:
         return None
+data = request.get_json()  # Capture incoming request data
+user_id = data.get('user_id')
+amount = data.get('amount')
+memo = data.get('memo', 'Payment for goods')
+metadata = data.get('metadata', {})
