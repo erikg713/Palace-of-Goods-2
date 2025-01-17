@@ -1,3 +1,4 @@
+
 # Palace of Goods
 
 ## Table of Contents
@@ -14,7 +15,7 @@
 - [Contact](#contact)
 
 ## Overview
-**Palace of Goods** is a robust e-commerce platform designed for seamless shopping experiences. It offers a user-friendly interface, advanced search features, and secure payment options. Built for scalability and performance, it ensures a delightful experience for both buyers and sellers.
+**Palace of Goods** is a robust e-commerce platform designed for seamless shopping experiences. It offers a user-friendly interface, advanced search features, and secure payment options. Built for scalability, it can handle thousands of products and concurrent users.
 
 ## Features
 - **Dynamic Product Catalog**: Easily browse and filter thousands of items.
@@ -44,13 +45,7 @@
    cd palace-of-goods
    ```
 
-2. **Create the Project Directory**
-   ```bash
-   mkdir Palace-of-Goods
-   cd Palace-of-Goods
-   ```
-
-3. **Set Up the Flask Backend**
+2. **Set Up the Flask Backend**
    1. Create a `backend/` folder for the Flask backend:
       ```bash
       mkdir backend
@@ -64,11 +59,7 @@
    3. Install Flask and dependencies:
       ```bash
       pip install flask flask-cors
-     npx create-react-app frontend
-   pip install pytest flask-testing
-   pip install requests
-cd frontend
-npm install axios web3 ```
+      ```
    4. Create the required files:
       - Create `app.py`:
         ```bash
@@ -82,7 +73,7 @@ npm install axios web3 ```
       ```python
       from flask import Flask, jsonify
       from flask_cors import CORS
-pip install flask flask-cors pymongo pi-network-sdk
+
       app = Flask(__name__)
       CORS(app)  # Allow React frontend to make API requests during development
 
@@ -103,7 +94,7 @@ pip install flask flask-cors pymongo pi-network-sdk
       ```
       Visit [http://127.0.0.1:5000/api/items](http://127.0.0.1:5000/api/items) in your browser. You should see the JSON data.
 
-4. **Set Up the React Frontend**
+3. **Set Up the React Frontend**
    1. Go back to the project root and create a `frontend/` folder:
       ```bash
       cd ..
@@ -123,7 +114,7 @@ pip install flask flask-cors pymongo pi-network-sdk
       ```
       This will launch the React app at [http://localhost:3000](http://localhost:3000).
 
-5. **Modify React to Fetch Data From Flask**
+4. **Modify React to Fetch Data From Flask**
    1. Open `src/App.js` in the `frontend/` folder and replace its contents with:
       ```javascript
       import React, { useState, useEffect } from "react";
@@ -175,19 +166,6 @@ Palace-of-Goods/
 │
 └── README.md                # Project documentation
 ```
-palace-of-goods/
-├── backend/
-│   ├── app.py
-│   ├── requirements.txt
-│   ├── config.py
-│   ├── models/
-│   ├── routes/
-│   └── ...
-├── frontend/
-│   ├── web/ (React.js app)
-│   └── mobile/ (React Native app)
-├── docker-compose.yml (optional)
-└── README.md
 
 ## Contributing
 We welcome contributions! Please follow these steps to contribute:
@@ -199,6 +177,3 @@ We welcome contributions! Please follow these steps to contribute:
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-For any questions or concerns, please open an issue or contact the maintainers at [erikg713](https://github.com/erikg713).
