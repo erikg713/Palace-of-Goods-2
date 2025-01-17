@@ -41,3 +41,25 @@ app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)
+from flask import Flask, jsonify
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+app = Flask(__name__)
+CORS(app)
+
+# Database config
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URL',
+    'postgresql://username:password@localhost:5432/palace_of_goods'
+)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({"status": "ok"}), 200
+
+if __name__ == '__main__':
+    app.run(debug=True)
