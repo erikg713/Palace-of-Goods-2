@@ -175,6 +175,19 @@ Palace-of-Goods/
 │
 └── README.md                # Project documentation
 ```
+palace-of-goods/
+├── backend/
+│   ├── app.py
+│   ├── requirements.txt
+│   ├── config.py
+│   ├── models/
+│   ├── routes/
+│   └── ...
+├── frontend/
+│   ├── web/ (React.js app)
+│   └── mobile/ (React Native app)
+├── docker-compose.yml (optional)
+└── README.md
 
 ## Contributing
 We welcome contributions! Please follow these steps to contribute:
