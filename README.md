@@ -346,3 +346,8 @@ C. React Debugging
 Open browser dev tools to inspect the React frontend.
 
 Use npm start directly in the frontend folder 
+
+## cd backend ##
+## python run.py ##
+## cd frontend ##
+## npm start ##
