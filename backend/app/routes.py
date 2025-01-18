@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.models import db, Product, User, Order
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from pi_network import PiNetwork
+import logging
 
 main = Blueprint('main', __name__)
 
@@ -57,4 +58,5 @@ def process_payment():
         payment = pi.process_payment(tx_id)
         return jsonify({"status": "success", "payment": payment}), 200
     except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 400
+        app.logger.error(f"Error processing payment: {str(e)}")
+        return jsonify({"status": "error", "message": "An internal error has occurred."}), 400
