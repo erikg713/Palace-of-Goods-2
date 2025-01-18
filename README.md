@@ -345,41 +345,4 @@ C. React Debugging
 
 Open browser dev tools to inspect the React frontend.
 
-Use npm start directly in the frontend folder if needed.
-
-
-
----
-
-5. Next Steps
-
-A. Implement and Test Features
-
-Build core Palace of Goods functionality, like product listing, user authentication, and payment integration.
-
-Use Postman or similar tools to test backend APIs.
-
-
-B. Prepare for Deployment Later
-
-While you're not deploying now, keep the following in mind:
-
-Write clean, modular code: Makes it easier to move to production later.
-
-Use .env files: Securely manage configurations for both local and production.
-
-Write tests: Automate testing for critical features.
-
-
-C. Learn Pi SDK and Blockchain Integration
-
-Study the Pi Network SDK documentation.
-
-Simulate peer-to-peer payments in sandbox mode.
-
-
-
----
-
-Let me know which part you'd like to dive into further! We can focus on building specific backend APIs, frontend components, or improving the database schema.
-
+Use npm start directly in the frontend folder 
