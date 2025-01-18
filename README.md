@@ -33,7 +33,7 @@
 - **Deployment**: Vercel (frontend), Heroku (backend)
 
 ## Installation and Setup
-
+## pip install pi-network
 ### Prerequisites
 - Node.js (v14 or higher)
 - MongoDB (Local or cloud-based like MongoDB Atlas)
