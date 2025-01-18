@@ -7,16 +7,29 @@ const ProductList = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/products')
-            .then(response => {
-                setProducts(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error(error);
-                setError('Failed to fetch products.');
-                setLoading(false);
-            });
+        let isMounted = true; // flag to track component mounting
+
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get(process.env.REACT_APP_API_URL + '/products');
+                if (isMounted) {
+                    setProducts(response.data);
+                    setLoading(false);
+                }
+            } catch (error) {
+                if (isMounted) {
+                    console.error(error);
+                    setError(error.message || 'Failed to fetch products.');
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchProducts();
+
+        return () => {
+            isMounted = false; // cleanup flag on component unmount
+        };
     }, []);
 
     if (loading) {
