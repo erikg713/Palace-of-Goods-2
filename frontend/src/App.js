@@ -5,39 +5,9 @@ import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
+import AdminDashboard from "./components/AdminDashboard";
+import Products from "./components/Products";
 
-const App = () => {
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<ProductList />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-      </Routes>
-    </Router>
-  );
-};
-
-export default App;
-
-
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AdminDashboard from './components/AdminDashboard';
-import Products from './components/Products';
-
-function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/products" element={<Products />} />
-            </Routes>
-        </Router>
-    );
-}
 // Initialize the Pi SDK
 const appId = "your_app_id"; // Replace with your App ID
 Pi.init({ app_id: appId, sandbox: true });
@@ -63,4 +33,21 @@ document.getElementById("authButton").addEventListener("click", () => {
 function onIncompletePaymentFound(payment) {
   console.log("Incomplete payment found:", payment);
 }
+
+const App = () => {
+  return (
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<ProductList />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/products" element={<Products />} />
+      </Routes>
+    </Router>
+  );
+};
+
 export default App;
