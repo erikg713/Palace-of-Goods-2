@@ -26,3 +26,17 @@ app.post("/incomplete", async (req, res) => {
   await axiosClient.post(`/v2/payments/${paymentId}/complete`, { txid }, config);
   return res.status(200).json({ message: `Handled the incomplete payment ${paymentId}` });
 });
+  // backend/src/index.ts
+
+  app.post('/signin', async (req, res) => {
+    try {
+      /* verify with the user's access token */
+      const me = await axiosClient.get(`/v2/me`, { headers: { 'Authorization': `Bearer ${currentUser.accessToken}` } });
+      console.log(me);
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(401).json({error: "User not authorized"});
+    }
+    return res.status(200).json({ message: "User signed in" });
+  }
