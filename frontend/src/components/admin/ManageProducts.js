@@ -4,50 +4,94 @@ import axios from 'axios';
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [form, setForm] = useState({ name: '', price: '', stock: '' });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const fetchProducts = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get('http://localhost:5000/admin/products');
+            setProducts(response.data);
+        } catch (err) {
+            setError('Failed to fetch products');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        axios.get('http://localhost:5000/admin/products')
-            .then(response => setProducts(response.data))
-            .catch(err => console.error(err));
+        fetchProducts();
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/admin/products', form)
-            .then(() => {
-                setForm({ name: '', price: '', stock: '' });
-                axios.get('http://localhost:5000/admin/products')
-                    .then(response => setProducts(response.data));
-            });
+        setLoading(true);
+        try {
+            await axios.post('http://localhost:5000/admin/products', form);
+            setForm({ name: '', price: '', stock: '' });
+            fetchProducts();
+        } catch (err) {
+            setError('Failed to save product');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        setLoading(true);
+        try {
+            await axios.delete(`http://localhost:5000/admin/products/${id}`);
+            fetchProducts();
+        } catch (err) {
+            setError('Failed to delete product');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm(prevForm => ({ ...prevForm, [name]: value }));
     };
 
     return (
         <div>
             <h2>Manage Products</h2>
+            {loading && <p>Loading...</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
+                    name="name"
                     placeholder="Name"
                     value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    onChange={handleChange}
                 />
                 <input
                     type="number"
+                    name="price"
                     placeholder="Price"
                     value={form.price}
-                    onChange={(e) => setForm({ ...form, price: e.target.value })}
+                    onChange={handleChange}
                 />
                 <input
                     type="number"
+                    name="stock"
                     placeholder="Stock"
                     value={form.stock}
-                    onChange={(e) => setForm({ ...form, stock: e.target.value })}
+                    onChange={handleChange}
                 />
-                <button type="submit">Save Product</button>
+                <button type="submit" disabled={loading}>Save Product</button>
             </form>
             <ul>
                 {products.map(product => (
-                    <li key={product.id}>{product.name} - ${product.price}</li>
+                    <li key={product.id}>
+                        {product.name} - ${product.price}
+                        <button onClick={() => handleDelete(product.id)} disabled={loading}>Delete</button>
+                    </li>
                 ))}
             </ul>
         </div>
