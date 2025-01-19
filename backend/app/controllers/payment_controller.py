@@ -44,4 +44,5 @@ def initiate_payment():
         else:
             return jsonify({'message': 'Failed to initiate payment', 'error': response_data}), response.status_code
     except Exception as e:
-        return jsonify({'message': 'An error occurred while initiating payment', 'error': str(e)}), 500
+        app.logger.error('An error occurred while initiating payment: %s', str(e))
+        return jsonify({'message': 'An error occurred while initiating payment'}), 500
