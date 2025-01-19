@@ -13,5 +13,29 @@ function App() {
         </Router>
     );
 }
+// Initialize the Pi SDK
+const appId = "your_app_id"; // Replace with your App ID
+Pi.init({ app_id: appId, sandbox: true });
 
+// Authenticate the user
+document.getElementById("authButton").addEventListener("click", () => {
+  Pi.authenticate(null, onIncompletePaymentFound).then(user => {
+    console.log("Authenticated user:", user);
+
+    // Retrieve and display the user's balance
+    Pi.getBalance().then(balance => {
+      console.log("User balance:", balance);
+      document.getElementById("balance").innerText = `Your balance: ${balance.balance} Pi`;
+    }).catch(error => {
+      console.error("Error fetching balance:", error);
+    });
+  }).catch(error => {
+    console.error("Authentication failed:", error);
+  });
+});
+
+// Handle incomplete payments
+function onIncompletePaymentFound(payment) {
+  console.log("Incomplete payment found:", payment);
+}
 export default App;
