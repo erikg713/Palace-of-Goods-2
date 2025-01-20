@@ -7,3 +7,4 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'your_default_secret')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://user:password@localhost:5432/palace_of_goods')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    DEBUG = os.getenv('FLASK_DEBUG', 'False').lower() in ['true', '1', 't']
