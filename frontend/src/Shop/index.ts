@@ -26,6 +26,11 @@ app.post("/incomplete", async (req, res) => {
     // Mark the order as paid in your DB
     await markOrderAsPaid(order.id); // Example function to mark order as paid
 
+    // Validate the paymentId before making the request
+    if (!isValidPaymentId(paymentId)) {
+      return res.status(400).json({ message: "Invalid payment ID." });
+    }
+
     // Let Pi Servers know that the payment is completed
     await axios.post(`/v2/payments/${paymentId}/complete`, { txid }, { timeout: 10000 });
     return res.status(200).json({ message: `Handled the incomplete payment ${paymentId}` });
@@ -53,6 +58,13 @@ const getOrderFromDB = async (paymentId) => {
 
 const markOrderAsPaid = async (orderId) => {
   // Implement this function to mark the order as paid in the database
+};
+
+const isValidPaymentId = (paymentId) => {
+  // Implement this function to validate the paymentId
+  // Example: Check against a list of valid payment IDs or query the database
+  const validPaymentIds = ["validId1", "validId2", "validId3"]; // Example list
+  return validPaymentIds.includes(paymentId);
 };
 
 app.listen(3000, () => {
