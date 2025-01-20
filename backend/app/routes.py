@@ -1,5 +1,26 @@
 # backend/app/routes.py
 
+import logging
+from flask import Blueprint
+from app.routes.product_routes import product_bp
+
+main = Blueprint('main', __name__)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Register blueprints
+main.register_blueprint(product_bp)
+
+# Example of adding logging in a route
+@main.route('/example', methods=['GET'])
+def example_route():
+    logger.info("Example route accessed")
+    return "Example"
+
+# backend/app/routes.py
+
 from flask import Blueprint
 from app.routes.product_routes import product_bp
 
