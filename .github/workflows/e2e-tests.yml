@@ -70,3 +70,11 @@ jobs:
           name: cypress-screenshots
           path: cypress/screenshots/
           if-no-files-found: warn
+# Step 1: Start the backend
+python -c "from tests.e2e import start_backend, setup_backend; setup_backend(); process = start_backend()"
+
+# Step 2: Run Cypress tests
+npx cypress run
+
+# Step 3: Stop the backend
+python -c "from tests.e2e import stop_backend; stop_backend(process)"
