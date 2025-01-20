@@ -1,2 +1,2 @@
-// Import commands.js
+// Load custom commands
 import './commands';
