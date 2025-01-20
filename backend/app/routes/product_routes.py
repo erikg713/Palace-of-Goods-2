@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from app.models import db, Product
 from flask_jwt_extended import jwt_required
 from app.exceptions import ProductNotFoundError
@@ -32,7 +32,8 @@ def get_products():
     except ValueError:
         return jsonify({'error': 'Invalid pagination parameters.'}), 400
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.', 'details': str(e)}), 500
+        current_app.logger.error(f"Database error occurred: {str(e)}")
+        return jsonify({'error': 'An internal error has occurred.'}), 500
 
 @product_bp.route('/products', methods=['POST'])
 @jwt_required()
@@ -61,4 +62,5 @@ def create_product():
         return jsonify(new_product.to_dict()), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({'error': 'Database error occurred.', 'details': str(e)}), 500
+        current_app.logger.error(f"Database error occurred: {str(e)}")
+        return jsonify({'error': 'An internal error has occurred.'}), 500
