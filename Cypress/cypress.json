@@ -1,1 +1,17 @@
-
+{
+  "baseUrl": "http://localhost:3000",  // Frontend base URL
+  "integrationFolder": "cypress/integration",  // Test files folder
+  "fixturesFolder": "cypress/fixtures",  // Mock data folder
+  "supportFile": "cypress/support/index.js",  // Global configurations
+  "viewportWidth": 1280,  // Default screen width for tests
+  "viewportHeight": 720,  // Default screen height for tests
+  "defaultCommandTimeout": 8000,  // Timeout for commands (in ms)
+  "responseTimeout": 20000,  // Timeout for API responses (in ms)
+  "video": true,  // Record video during tests
+  "screenshotOnRunFailure": true,  // Capture screenshot on test failure
+  "env": {
+    "apiUrl": "http://localhost:5000/api",  // Backend API base URL for API testing
+    "username": "testuser",  // Default test user credentials
+    "password": "testpassword"
+  }
+}
