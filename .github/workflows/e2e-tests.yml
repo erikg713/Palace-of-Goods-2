@@ -1,77 +1,39 @@
-name: e2e tests
+name: Cypress E2E Testing
 
 on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
   pull_request:
-    paths-ignore:
-      - '**.md'
-  workflow_dispatch:
 
 jobs:
-  test-setup-python:
-    name: Test setup-python
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system:
-          - ubuntu-22.04
-          - windows-latest
-          - macos-latest
+  e2e-tests:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      # Checkout the code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
+      # Set up Python (if backend dependencies are required)
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.9'
 
-      - name: Install system dependencies (Linux only)
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libpq-dev build-essential
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install Python dependencies
+      - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Verify Python version
-        run: python -c "import sys; assert sys.version_info[:2] == (3, 9)"
-
-      - name: Run tests
-        run: pytest tests/
-
-  test-setup-node:
-    name: Test setup-node
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system:
-          - ubuntu-22.04
-          - windows-latest
-          - macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
+      # Set up Node.js for Cypress
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 16
 
-      - name: Cache Node.js dependencies
+      # Cache Node.js dependencies
+      - name: Cache Node.js Dependencies
         uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -79,11 +41,32 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install Node.js dependencies
+      # Install Node.js dependencies
+      - name: Install Node.js Dependencies
         run: npm install
 
-      - name: Verify Node.js version
-        run: node -v
+      # Build the project (if required)
+      - name: Build Project
+        run: npm run build
 
-      - name: Run tests
-        run: npm test
+      # Install and start Cypress
+      - name: Run Cypress Tests
+        run: |
+          npm install cypress --save-dev
+          npx cypress install
+          npx cypress run
+
+      # Store Cypress test results and artifacts
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-results
+          path: cypress/videos/
+          if-no-files-found: warn
+
+      - name: Upload Test Screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
+          if-no-files-found: warn
