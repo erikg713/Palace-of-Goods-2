@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, current_app
 from app.models import db, Product
-from flask_jwt_extended import jwt_required
 from app.exceptions import ProductNotFoundError
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import SQLAlchemyError
 
 product_bp = Blueprint('product', __name__)
@@ -23,7 +23,7 @@ def get_products():
         query = request.args.get('query', '').strip()
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 10))
-        
+
         if page <= 0 or per_page <= 0:
             return jsonify({'error': 'Page and per_page must be positive integers.'}), 400
 
@@ -50,15 +50,17 @@ def create_product():
     """
     try:
         data = request.json
-        if not data or not data.get('name') or not isinstance(data.get('price'), (int, float)):
-            return jsonify({'error': 'Invalid input. "name" and "price" are required.'}), 400
+        
+        name = data.get('name')
+        price = data.get('price')
 
-        if data['price'] <= 0:
-            return jsonify({'error': 'Price must be a positive value.'}), 400
+        if not data or not name or not isinstance(price, (int, float)):
+            return jsonify({'error': 'Invalid input. "name" and "price" are required and must be valid.'}), 400
 
-        new_product = Product(name=data['name'], price=data['price'])
+        new_product = Product(name=name, price=price)
         db.session.add(new_product)
         db.session.commit()
+
         return jsonify(new_product.to_dict()), 201
     except SQLAlchemyError as e:
         db.session.rollback()
