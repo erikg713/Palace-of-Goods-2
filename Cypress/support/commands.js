@@ -21,3 +21,9 @@ before(() => {
   cy.login('testuser', 'testpassword');
   cy.addProduct('Sample Product', 'This is a test product', 100);
 });
+Cypress.Commands.add('login', (username, password) => {
+  cy.request('POST', '/login', { username, password })
+    .then((response) => {
+      window.localStorage.setItem('token', response.body.token);
+    });
+});
