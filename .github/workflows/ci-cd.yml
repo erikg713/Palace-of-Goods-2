@@ -1,77 +1,13 @@
-name: CI/CD Pipeline
+name: CI/CD
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
-  build-test-deploy:
+  build:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:13
-        ports:
-          - "5432:5432"
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: palaceofgoods
-
     steps:
-      # Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Set up Python for the backend
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-
-      - name: Install Backend Dependencies
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r backend/requirements.txt
-
-      - name: Run Backend Tests
-        run: |
-          source venv/bin/activate
-          pytest backend/tests/
-
-      # Set up Node.js for the frontend
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install Frontend Dependencies
-        run: |
-          cd frontend
-          npm install
-
-      - name: Run Frontend Tests
-        run: |
-          cd frontend
-          npm test
-
-      # Build Docker Images
-      - name: Build Docker Images
-        run: docker-compose build
-
-      # Push Images to Docker Hub (or any container registry)
-      - name: Push Docker Images
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker tag backend:latest your-dockerhub-username/backend:latest
-          docker tag frontend:latest your-dockerhub-username/frontend:latest
-          docker push your-dockerhub-username/backend:latest
-          docker push your-dockerhub-username/frontend:latest
+    - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: npm install
+    - name: Run Tests
+      run: npm test
