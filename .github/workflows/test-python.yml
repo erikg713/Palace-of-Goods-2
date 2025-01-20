@@ -41,7 +41,7 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: Check python-path
-        run: ./__tests__/check-python-path.sh '${{ steps.setup-python.outputs.python-path }}'
+        run: ./tests/Check-Python-build.sh '${{ steps.setup-python.outputs.python-path }}'
         shell: bash
 
       - name: Validate version
