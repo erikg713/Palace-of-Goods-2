@@ -1,3 +1,13 @@
+# backend/app/routes.py
+
+from flask import Blueprint
+from app.routes.product_routes import product_bp
+
+main = Blueprint('main', __name__)
+
+# Register blueprints
+main.register_blueprint(product_bp)
+
 from flask import Blueprint, jsonify, request
 from app.models import db, Product, User, Order
 from flask_jwt_extended import jwt_required, get_jwt_identity
