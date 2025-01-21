@@ -1,3 +1,4 @@
+
 # Palace of Goods
 
 ## Table of Contents
