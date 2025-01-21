@@ -1,4 +1,3 @@
-
 # Palace of Goods
 
 ## Table of Contents
@@ -8,14 +7,13 @@
 - [Installation and Setup](#installation-and-setup)
   - [Prerequisites](#prerequisites)
   - [Steps](#steps)
-- [Usage](#usage)
 - [Project Directory Structure](#project-directory-structure)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 
 ## Overview
-**Palace of Goods** is a robust e-commerce platform designed for seamless shopping experiences. It offers a user-friendly interface, advanced search features, and secure payment options. Built for scalability, it can handle thousands of products and concurrent users.
+**Palace of Goods** is a robust e-commerce platform designed for seamless shopping experiences. It offers a user-friendly interface, advanced search features, and secure payment options. Built for scalability and high performance, it ensures a smooth shopping experience.
 
 ## Features
 - **Dynamic Product Catalog**: Easily browse and filter thousands of items.
@@ -33,7 +31,6 @@
 - **Deployment**: Vercel (frontend), Heroku (backend)
 
 ## Installation and Setup
-## pip install pi-network
 ### Prerequisites
 - Node.js (v14 or higher)
 - MongoDB (Local or cloud-based like MongoDB Atlas)
@@ -41,8 +38,8 @@
 ### Steps
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/username/palace-of-goods.git
-   cd palace-of-goods
+   git clone https://github.com/erikg713/Palace-of-Goods.git
+   cd Palace-of-Goods
    ```
 
 2. **Set Up the Flask Backend**
@@ -177,5 +174,6 @@ We welcome contributions! Please follow these steps to contribute:
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-docker-compose up --build
-If you're not ready to deploy yet, the focus should be on local development and testing while preparing the project structure for eventual deployment. Here's how you can continue building and testing the Palace of Goods project locally using Docker:
+
+## Contact
+For any inquiries or issues, feel free to [contact us](mailto:your-email@example.com).
