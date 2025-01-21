@@ -15,8 +15,11 @@ products = [
 
 orders = []
 
-# Pi Network API Key
-PI_API_KEY = "your_pi_network_api_key"
+# Environment Variables for Pi Network API
+PI_API_KEY = os.getenv('PI_API_KEY')
+
+# Constants
+PROFIT_PERCENTAGE = 0.10
 
 @app.route('/api/products', methods=['GET'])
 def get_products():
@@ -32,10 +35,13 @@ def get_product(product_id):
 @app.route('/api/complete-payment/<payment_id>', methods=['POST'])
 def complete_payment(payment_id):
     data = request.json
-    total_amount = data.get('total_amount')
-    txid = data.get('txid')
+    if not data or 'total_amount' not in data or 'txid' not in data:
+        return jsonify({"error": "Invalid input"}), 400
 
-    profit = total_amount * 0.10  # Calculate 10% profit
+    total_amount = data['total_amount']
+    txid = data['txid']
+
+    profit = total_amount * PROFIT_PERCENTAGE
     orders.append({"txid": txid, "total_amount": total_amount, "profit": profit})
 
     # Send to Pi Network API
@@ -44,7 +50,9 @@ def complete_payment(payment_id):
 
     if response.status_code == 200:
         return jsonify({"message": "Payment completed", "profit": profit}), 200
-    return jsonify({"error": "Payment failed"}), 500
+    else:
+        error_message = response.json().get('error', 'Payment failed')
+        return jsonify({"error": error_message}), 500
 
 @app.route('/api/orders', methods=['GET'])
 def get_orders():
