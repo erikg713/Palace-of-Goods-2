@@ -15,6 +15,9 @@
 
 ## Overview
 **Palace of Goods** is a robust e-commerce platform designed for seamless shopping experiences. It offers a user-friendly interface, advanced search features, and secure payment options. Built for scalability and high performance, it ensures a smooth shopping experience.
+## Scripts
+psql -U <username> -d <database_name> -f db/__init__.sql
+psql -U <username> -d <database_name> -f seed.sql
 
 ## Features
 - **Dynamic Product Catalog**: Easily browse and filter thousands of items.
