@@ -66,3 +66,81 @@ python run.py
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
+
+Frontend Setup
+
+1. Create and navigate to the frontend/ directory:
+
+npx create-react-app frontend
+cd frontend
+
+
+2. Install dependencies:
+
+npm install axios
+
+
+3. Start the development server:
+
+npm start
+
+The app will run at http://localhost:3000.
+
+
+
+
+---
+
+Project Directory Structure
+
+Palace-of-Goods/
+├── backend/
+│   ├── app.py               # Flask backend code
+│   ├── requirements.txt     # Backend dependencies
+│   └── venv/                # Virtual environment (optional)
+├── frontend/
+│   ├── src/
+│   │   └── App.js           # Main React component
+│   ├── public/
+│   ├── package.json         # Frontend dependencies
+│   └── build/               # Production build of React
+└── README.md                # Project documentation
+
+
+---
+
+Contributing
+
+We welcome contributions to enhance Palace of Goods. Please follow these steps:
+
+1. Fork the repository.
+
+
+2. Create a new branch:
+
+git checkout -b feature-branch
+
+
+3. Make your changes and commit:
+
+git commit -m "Add new feature"
+
+
+4. Push to your branch:
+
+git push origin feature-branch
+
+
+5. Submit a pull request.
+
+
+
+
+---
+
+License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+
+---
