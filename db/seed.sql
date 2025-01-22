@@ -1,1 +1,4 @@
-
+INSERT INTO products (name, description, price) VALUES
+('Product 1', 'Description for Product 1', 19.99),
+('Product 2', 'Description for Product 2', 29.99),
+('Product 3', 'Description for Product 3', 39.99);
