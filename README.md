@@ -61,7 +61,6 @@ Explore our marketplace for a wide range of products with Web3 integration.
 git clone https://github.com/erikg713/Palace-of-Goods.git
 cd Palace-of-Goods
 
-## Backend Setup ##
 pip install -r requirements.txt
 python run.py
 flask db init
