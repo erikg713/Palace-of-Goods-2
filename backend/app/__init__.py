@@ -1,15 +1,13 @@
 from flask import Flask
-from flask_jwt_extended import JWTManager
+from app.routes.auth_routes import auth_bp
+from app.routes.user_routes import user_bp
 
 def create_app():
     app = Flask(__name__)
-    app.config["JWT_SECRET_KEY"] = "your-secret-key"
+    app.config["SECRET_KEY"] = "your-secret-key"
 
-    # Initialize JWT
-    jwt = JWTManager(app)
-
-    # Register blueprints
-    from app.routes.admin_routes import admin_bp
-    app.register_blueprint(admin_bp)
+    # Register Blueprints
+    app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(user_bp, url_prefix="/users")
 
     return app
