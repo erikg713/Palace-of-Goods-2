@@ -2,18 +2,20 @@ version: '3.8'
 
 services:
   frontend:
-    image: node:16
-    working_dir: /app
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    ports:
-      - "3000:3000"
+    stdin_open: true
     command: ["npm", "start"]
+    depends_on:
+      - backend
+    environment:
+      REACT_APP_API_URL: http://localhost:5000
 
-version: '3.8'
-
-services:
   backend:
     build:
       context: ./backend
@@ -26,13 +28,6 @@ services:
     depends_on:
       - db
 
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - "3000:3000"
-    stdin_open: true
-
   db:
     image: postgres:17
     environment:
@@ -43,6 +38,7 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    restart: always
 
   nginx:
     build:
@@ -52,6 +48,8 @@ services:
     depends_on:
       - frontend
       - backend
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
 
 volumes:
   pgdata:
