@@ -1,7 +1,23 @@
 from flask import Blueprint, jsonify, request
 from app.models import Product, User
 from app import db
+from flask import request, jsonify, Blueprint
 
+bp = Blueprint("api", __name__)
+
+@bp.route("/api/payments/approve", methods=["POST"])
+def approve_payment():
+    data = request.json
+    payment_id = data.get("paymentId")
+    print(f"Payment approved: {payment_id}")
+    return jsonify({"message": "Payment approved"}), 200
+
+@bp.route("/api/payments/complete", methods=["POST"])
+def complete_payment():
+    data = request.json
+    payment_id = data.get("paymentId")
+    print(f"Payment completed: {payment_id}")
+    return jsonify({"message": "Payment completed"}), 200
 # Create a Blueprint for the API
 bp = Blueprint("api", __name__)
 
