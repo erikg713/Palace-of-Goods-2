@@ -35,6 +35,14 @@
 ### Prerequisites
 - Node.js (v14 or higher)
 - MongoDB (Local or cloud-based like MongoDB Atlas)
+# Pi Network SDK 
+npm install @pinetwork-js/sdk
+import { Pi } from "@pinetwork-js/sdk";
+
+Pi.init({
+  version: "2.0",
+  sandbox: true, // Set to false for production
+});
 
 ### Steps
 1. **Clone the Repository**
