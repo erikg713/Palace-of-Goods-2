@@ -1,23 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.models import Product, User
 from app import db
-from flask import request, jsonify, Blueprint
 
-bp = Blueprint("api", __name__)
-
-@bp.route("/api/payments/approve", methods=["POST"])
-def approve_payment():
-    data = request.json
-    payment_id = data.get("paymentId")
-    print(f"Payment approved: {payment_id}")
-    return jsonify({"message": "Payment approved"}), 200
-
-@bp.route("/api/payments/complete", methods=["POST"])
-def complete_payment():
-    data = request.json
-    payment_id = data.get("paymentId")
-    print(f"Payment completed: {payment_id}")
-    return jsonify({"message": "Payment completed"}), 200
 # Create a Blueprint for the API
 bp = Blueprint("api", __name__)
 
@@ -34,7 +18,6 @@ def get_products():
         "pages": products.pages,
         "current_page": products.page,
     })
-
 
 @bp.route("/api/products", methods=["POST"])
 def add_product():
@@ -68,10 +51,10 @@ def login_user():
         return jsonify({"token": token}), 200
     return jsonify({"error": "Invalid credentials"}), 401
 
-# app/routes.py
-
+# Payment Routes
 @bp.route("/api/payments/approve", methods=["POST"])
 def approve_payment():
+    """Approve a payment."""
     data = request.json
     payment_id = data.get("paymentId")
     print(f"Payment approved: {payment_id}")
@@ -79,6 +62,7 @@ def approve_payment():
 
 @bp.route("/api/payments/complete", methods=["POST"])
 def complete_payment():
+    """Complete a payment."""
     data = request.json
     payment_id = data.get("paymentId")
     print(f"Payment completed: {payment_id}")
