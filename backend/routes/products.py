@@ -2,7 +2,22 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from app import db
 from models.models import Product
+from middleware import admin_required
 
+@product_bp.route('/', methods=['POST'])
+@jwt_required()
+@admin_required
+def create_product():
+    data = request.get_json()
+    new_product = Product(
+        name=data.get('name'),
+        description=data.get('description'),
+        price=data.get('price')
+    )
+    db.session.add(new_product)
+    db.session.commit()
+    
+    return jsonify({"message": "Product created successfully"}), 201
 product_bp = Blueprint("products", __name__)
 
 @product_bp.route('/', methods=['POST'])
