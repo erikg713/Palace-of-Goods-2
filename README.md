@@ -121,7 +121,12 @@
       function App() {
           const [items, setItems] = useState([]);
 
-          useEffect(() => {
+      **Migrations**
+      pip install Flask-Migrate
+      flask db init
+      flask db migrate -m "Initial migration"
+flask db upgrade
+          
               axios.get("http://127.0.0.1:5000/api/items")
                   .then(response => setItems(response.data))
                   .catch(error => console.error("Error fetching data:", error));
