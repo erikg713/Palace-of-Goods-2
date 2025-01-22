@@ -50,55 +50,8 @@ Pi.init({
    git clone https://github.com/erikg713/Palace-of-Goods.git
    cd Palace-of-Goods
    ```
+pip install python-dotenv
 
-2. **Set Up the Flask Backend**
-   1. Create a `backend/` folder for the Flask backend:
-      ```bash
-      mkdir backend
-      cd backend
-      ```
-   2. Create a virtual environment (optional but recommended):
-      ```bash
-      python3 -m venv venv
-      source venv/bin/activate  # On Windows: venv\Scripts\activate
-      ```
-   3. Install Flask and dependencies:
-      ```bash
-      pip install flask flask-cors
-      ```
-   4. Create the required files:
-      - Create `app.py`:
-        ```bash
-        touch app.py
-        ```
-      - Create `requirements.txt` to track dependencies:
-        ```bash
-        pip freeze > requirements.txt
-        ```
-   5. Add basic Flask boilerplate code in `app.py`:
-      ```python
-      from flask import Flask, jsonify
-      from flask_cors import CORS
-
-      app = Flask(__name__)
-      CORS(app)  # Allow React frontend to make API requests during development
-
-      @app.route('/api/items', methods=['GET'])
-      def get_items():
-          items = [
-              {"id": 1, "name": "Golden Cup", "price": 19.99},
-              {"id": 2, "name": "Silver Sword", "price": 34.99},
-          ]
-          return jsonify(items)
-
-      if __name__ == "__main__":
-          app.run(debug=True)
-      ```
-   6. Test the Flask app: Run the backend:
-      ```bash
-      python app.py
-      ```
-      Visit [http://127.0.0.1:5000/api/items](http://127.0.0.1:5000/api/items) in your browser. You should see the JSON data.
 
 3. **Set Up the React Frontend**
    1. Go back to the project root and create a `frontend/` folder:
