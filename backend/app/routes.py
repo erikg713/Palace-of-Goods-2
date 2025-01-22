@@ -38,3 +38,15 @@ def add_product():
     db.session.add(product)
     db.session.commit()
     return jsonify(product.to_dict()), 201
+
+@bp.route("/api/products", methods=["GET"])
+def get_products():
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+    products = Product.query.paginate(page=page, per_page=per_page, error_out=False)
+    return jsonify({
+        "products": [product.to_dict() for product in products.items],
+        "total": products.total,
+        "pages": products.pages,
+        "current_page": products.page,
+    })
