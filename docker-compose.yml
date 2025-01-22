@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  frontend:
+    image: node:16
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: ["npm", "start"]
+
+version: '3.8'
+
+services:
   backend:
     build:
       context: ./backend
