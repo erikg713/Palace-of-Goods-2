@@ -61,6 +61,10 @@ Run the Application
 
 python run.py
 
+pip install pytest flask-testing
+
+
+
 The backend will run at http://localhost:5000.
 
 
