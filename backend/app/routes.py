@@ -23,7 +23,11 @@ def get_products():
 def add_product():
     """Add a new product."""
     data = request.json
-    product = Product(name=data["name"], description=data["description"], price=data["price"])
+    product = Product(
+        name=data["name"],
+        description=data["description"],
+        price=data["price"]
+    )
     db.session.add(product)
     db.session.commit()
     return jsonify(product.to_dict()), 201
@@ -35,8 +39,11 @@ def register_user():
     data = request.json
     if User.query.filter_by(email=data["email"]).first():
         return jsonify({"error": "Email already registered"}), 400
-    user = User(username=data["username"], email=data["email"])
-    user.set_password(data["password"])  # Assuming User model has a set_password method
+    user = User(
+        username=data["username"],
+        email=data["email"]
+    )
+    user.set_password(data["password"])  # Ensure User model has set_password method
     db.session.add(user)
     db.session.commit()
     return jsonify(user.to_dict()), 201
@@ -46,8 +53,8 @@ def login_user():
     """Log in a user and return a token."""
     data = request.json
     user = User.query.filter_by(email=data["email"]).first()
-    if user and user.check_password(data["password"]):  # Assuming User model has a check_password method
-        token = user.generate_token()  # Assuming User model has a generate_token method
+    if user and user.check_password(data["password"]):  # Ensure User model has check_password method
+        token = user.generate_token()  # Ensure User model has generate_token method
         return jsonify({"token": token}), 200
     return jsonify({"error": "Invalid credentials"}), 401
 
