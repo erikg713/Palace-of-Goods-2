@@ -1,19 +1,24 @@
-version: "3.8"
+version: '3.8'
+
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
     ports:
       - "5000:5000"
-    environment:
-      - FLASK_APP=run.py
-      - DATABASE_URL=postgresql://user:password@db/palace_of_goods
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
     depends_on:
       - db
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
     ports:
       - "3000:3000"
+    stdin_open: true
 
   db:
     image: postgres:17
@@ -21,5 +26,19 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: palace_of_goods
+    ports:
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  pgdata:
