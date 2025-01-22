@@ -178,6 +178,13 @@ We welcome contributions! Please follow these steps to contribute:
 4. Push to the branch (`git push origin feature-branch`).
 5. Create a pull request.
 
+## Backend
+pip install -r requirements.txt
+python run.py
+pytest
+flask db migrate -m "Message"
+flask db upgrade
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
