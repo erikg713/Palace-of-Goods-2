@@ -52,4 +52,18 @@ def login_user():
         return jsonify({"token": token}), 200
     return jsonify({"error": "Invalid credentials"}), 401
 
+# app/routes.py
 
+@bp.route("/api/payments/approve", methods=["POST"])
+def approve_payment():
+    data = request.json
+    payment_id = data.get("paymentId")
+    print(f"Payment approved: {payment_id}")
+    return jsonify({"message": "Payment approved"}), 200
+
+@bp.route("/api/payments/complete", methods=["POST"])
+def complete_payment():
+    data = request.json
+    payment_id = data.get("paymentId")
+    print(f"Payment completed: {payment_id}")
+    return jsonify({"message": "Payment completed"}), 200
