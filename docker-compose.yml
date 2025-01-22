@@ -16,13 +16,10 @@ services:
       - "3000:3000"
 
   db:
-    image: postgres:15
+    image: postgres:17
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: palace_of_goods
     volumes:
       - db_data:/var/lib/postgresql/data
-
-volumes:
-  db_data:
