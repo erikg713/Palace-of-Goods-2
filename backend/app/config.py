@@ -8,3 +8,4 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.getenv("SECRET_KEY", "your_secret_key")
     PI_API_KEY = os.getenv("PI_API_KEY")
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'your-jwt-secret-key')
