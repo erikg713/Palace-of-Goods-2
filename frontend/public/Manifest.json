@@ -1,0 +1,25 @@
+{
+  "short_name": "PalaceGoods",
+  "name": "Palace of Goods",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#4caf50",
+  "display": "standalone",
+  "orientation": "portrait",
+  "description": "An e-commerce marketplace powered by Web3 and the Pi Network.",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["shopping", "marketplace", "ecommerce"]
+}
