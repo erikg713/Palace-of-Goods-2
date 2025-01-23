@@ -28,3 +28,6 @@ gunicorn
 
 # PostgreSQL driver
 psycopg2-binary==2.9.7
+
+libpq-dev 
+python3-dev
