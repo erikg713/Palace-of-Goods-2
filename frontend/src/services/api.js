@@ -11,3 +11,8 @@ export const purchaseItem = async (itemId) => {
     const response = await axios.post(`${API_URL}/api/marketplace/purchase`, { itemId });
     return response.data;
 };
+
+export const fetchProducts = async () => {
+  const response = await axios.get("/api/products");
+  return response.data;
+};
