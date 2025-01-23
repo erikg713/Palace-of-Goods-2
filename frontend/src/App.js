@@ -1,19 +1,20 @@
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Marketplace from './components/Marketplace';
 
-function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Marketplace />} />
-            </Routes>
-        </Router>
-    );
-}
+// Layout components
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
 
-export default App;
+// Page components
+import Home from "./components/pages/Home";
+import About from "./components/pages/About";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import Marketplace from "./components/Marketplace";
+import ProtectedRoute from "./components/utils/ProtectedRoute";
+import Dashboard from "./components/pages/Dashboard";
+
 function App() {
   return (
     <AuthProvider>
@@ -21,10 +22,24 @@ function App() {
         <Header />
         <main>
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+
+            {/* Marketplace */}
+            <Route path="/marketplace" element={<Marketplace />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />
@@ -32,3 +47,5 @@ function App() {
     </AuthProvider>
   );
 }
+
+export default App;
