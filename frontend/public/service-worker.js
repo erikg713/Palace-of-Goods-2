@@ -12,16 +12,17 @@ const STATIC_ASSETS = [
 
 // Install event: Cache static assets
 self.addEventListener("install", (event) => {
+  console.log("[Service Worker] Installing and caching static assets...");
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("[Service Worker] Pre-caching static assets");
       return cache.addAll(STATIC_ASSETS);
     })
   );
 });
 
-// Activate event: Clean up old caches
+// Activate event: Clean up old caches and claim clients
 self.addEventListener("activate", (event) => {
+  console.log("[Service Worker] Activating...");
   const cacheWhitelist = [CACHE_NAME, OFFLINE_CACHE_NAME];
   event.waitUntil(
     caches.keys().then((cacheNames) =>
@@ -35,23 +36,25 @@ self.addEventListener("activate", (event) => {
       )
     )
   );
+  self.clients.claim(); // Take control of all open pages immediately
 });
 
 // Fetch event: Serve from cache, fallback to network, then offline page
 self.addEventListener("fetch", (event) => {
+  console.log(`[Service Worker] Fetching: ${event.request.url}`);
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       return (
         cachedResponse ||
         fetch(event.request)
           .then((networkResponse) => {
-            // Cache the network response dynamically
-            return caches.open(CACHE_NAME).then((cache) => {
-              if (event.request.method === "GET") {
+            if (event.request.method === "GET") {
+              // Dynamically cache network responses
+              caches.open(CACHE_NAME).then((cache) => {
                 cache.put(event.request, networkResponse.clone());
-              }
-              return networkResponse;
-            });
+              });
+            }
+            return networkResponse;
           })
           .catch(() => {
             // Serve offline fallback for HTML requests
@@ -64,8 +67,16 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
+// Notify user of service worker updates
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+
 // Workbox configuration: Cache images with CacheFirst strategy
 if (typeof workbox !== "undefined") {
+  console.log("[Service Worker] Workbox loaded.");
   workbox.routing.registerRoute(
     ({ request }) => request.destination === "image",
     new workbox.strategies.CacheFirst({
@@ -76,6 +87,22 @@ if (typeof workbox !== "undefined") {
           maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
         }),
       ],
+    })
+  );
+
+  // Add caching for JS and CSS files
+  workbox.routing.registerRoute(
+    ({ request }) => request.destination === "script" || request.destination === "style",
+    new workbox.strategies.StaleWhileRevalidate({
+      cacheName: "static-resources",
+    })
+  );
+
+  // Add caching for API requests
+  workbox.routing.registerRoute(
+    ({ url }) => url.pathname.startsWith("/api/"),
+    new workbox.strategies.NetworkFirst({
+      cacheName: "api-cache",
     })
   );
 } else {
