@@ -1,3 +1,15 @@
+import React from "react";
+
+const Home = () => {
+  return (
+    <div>
+      <h2>Welcome to Palace of Goods</h2>
+      <p>Explore our marketplace and find amazing products!</p>
+    </div>
+  );
+};
+
+export default Home;
 import React, { useEffect, useState } from "react";
 import { fetchProducts } from "../services/api";
 
